@@ -1,17 +1,19 @@
-# food_tracker
+# 🍎 FoodTracker AI
 
-A new Flutter project.
+![Flutter](https://img.shields.io/badge/Flutter-%2302569B.svg?style=for-the-badge&logo=Flutter&logoColor=white)
+![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
+![Gemini AI](https://img.shields.io/badge/Gemini%20AI-8E75B2.svg?style=for-the-badge&logo=googlebard&logoColor=white)
 
-## Getting Started
+**FoodTracker AI** — це розумний щоденник харчування у вигляді прогресивного веб-застосунку (PWA). Замість ручного введення даних, додаток використовує штучний інтелект для розпізнавання їжі за фото та автоматичного підрахунку калорій, білків, жирів і вуглеводів.
 
-This project is a starting point for a Flutter application.
+## ✨ Ключові можливості
+- **📸 Photo-to-Macros:** Аналіз страв за допомогою Google Gemini AI.
+- **☁️ Хмарна синхронізація:** Усі дані надійно зберігаються у Firebase Firestore і доступні з будь-якого пристрою.
+- **🔒 Приватність:** Захищена авторизація (Firebase Auth) та суворі правила доступу до бази даних. Кожен користувач бачить лише власну статистику.
+- **📊 Розумний підрахунок:** Автоматичний розрахунок денної норми калорій (BMR) на основі фізичних параметрів користувача.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Learn Flutter](https://docs.flutter.dev/get-started/learn-flutter)
-- [Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Flutter learning resources](https://docs.flutter.dev/reference/learning-resources)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## 🛠️ Технологічний стек
+- **Frontend:** Flutter (Dart), Flutter Web
+- **Backend/Database:** Firebase Authentication, Cloud Firestore
+- **AI Integration:** Google Gemini API
+- **Hosting:** Netlify
