@@ -28,7 +28,11 @@ class GeminiService {
   }
 
   static const String _prompt =
-      'Analyze this image of food. Return ONLY a valid JSON object with these exact keys: food_name (string), calories (int), protein_grams (int), carbs_grams (int), fats_grams (int). Do not include any markdown formatting like ```json, just the raw JSON text.';
+      'Проаналізуй зображення страви та поверни ТІЛЬКИ валідний JSON без markdown. '
+      'Усі назви мають бути ВИКЛЮЧНО українською мовою. '
+      'Формат відповіді: '
+      '{"food_name":"string","calories":int,"protein_grams":int,"carbs_grams":int,"fats_grams":int,"ingredients":[{"name":"string","calories":int,"protein_grams":int,"carbs_grams":int,"fats_grams":int}]}. '
+      'Не додавай жодного тексту поза JSON.';
 
   Future<Meal> analyzeFoodImage({
     required Uint8List imageBytes,

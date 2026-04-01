@@ -98,6 +98,7 @@ class _MealAnalysisScreenState extends State<MealAnalysisScreen> {
       proteinGrams: meal.proteinGrams,
       carbsGrams: meal.carbsGrams,
       fatsGrams: meal.fatsGrams,
+      ingredients: meal.ingredients,
       loggedAt: DateTime.now(),
     );
     await widget.storageService.saveMeal(dated);
@@ -221,6 +222,49 @@ class _AnalysisResultCard extends StatelessWidget {
                 _NutrientChip(label: 'Жири', value: '${meal.fatsGrams} г'),
               ],
             ),
+            const SizedBox(height: 12),
+            Text(
+              'Склад страви',
+              style: Theme.of(context).textTheme.titleSmall,
+            ),
+            const SizedBox(height: 8),
+            if (meal.ingredients.isEmpty)
+              const Text('Деталізацію інгредієнтів не знайдено')
+            else
+              Column(
+                children: meal.ingredients
+                    .map(
+                      (ingredient) => Container(
+                        width: double.infinity,
+                        margin: const EdgeInsets.only(bottom: 8),
+                        padding: const EdgeInsets.all(10),
+                        decoration: BoxDecoration(
+                          color: Colors.white10,
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              ingredient.name.isEmpty
+                                  ? 'Невідомий інгредієнт'
+                                  : ingredient.name,
+                              style: Theme.of(context).textTheme.bodyLarge,
+                            ),
+                            const SizedBox(height: 4),
+                            Text(
+                              '${ingredient.calories} ккал • '
+                              'Б ${ingredient.proteinGrams} г • '
+                              'В ${ingredient.carbsGrams} г • '
+                              'Ж ${ingredient.fatsGrams} г',
+                              style: Theme.of(context).textTheme.bodySmall,
+                            ),
+                          ],
+                        ),
+                      ),
+                    )
+                    .toList(),
+              ),
           ],
         ),
       ),
