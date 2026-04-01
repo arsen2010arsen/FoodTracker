@@ -111,26 +111,26 @@ class _MealAnalysisScreenState extends State<MealAnalysisScreen> {
     return Scaffold(
       appBar: AppBar(title: const Text('Аналіз страви')),
       body: SafeArea(
-        child: Padding(
+        child: SingleChildScrollView( // ДОДАНО: Прокрутка екрана
           padding: const EdgeInsets.all(16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              Expanded(
-                child: Container(
-                  decoration: BoxDecoration(
-                    color: Colors.grey.shade900,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  clipBehavior: Clip.antiAlias,
-                  child: _selectedImage == null
-                      ? const Center(child: Text('Зображення не вибрано'))
-                      : buildPlatformImage(
-                          imagePath: _selectedImage!.path,
-                          imageBytes: kIsWeb ? _imageBytes : null,
-                          fit: BoxFit.cover,
-                        ),
+              // ДОДАНО: Контейнер фіксованої висоти замість Expanded
+              Container(
+                height: 280, 
+                decoration: BoxDecoration(
+                  color: Colors.grey.shade900,
+                  borderRadius: BorderRadius.circular(16),
                 ),
+                clipBehavior: Clip.antiAlias,
+                child: _selectedImage == null
+                    ? const Center(child: Text('Зображення не вибрано'))
+                    : buildPlatformImage(
+                        imagePath: _selectedImage!.path,
+                        imageBytes: kIsWeb ? _imageBytes : null,
+                        fit: BoxFit.cover,
+                      ),
               ),
               const SizedBox(height: 16),
               if (_isAnalyzing) const _AnalyzingLoader(),
@@ -142,7 +142,7 @@ class _MealAnalysisScreenState extends State<MealAnalysisScreen> {
                 const SizedBox(height: 12),
                 _AnalysisResultCard(meal: _analyzedMeal!),
               ],
-              const SizedBox(height: 12),
+              const SizedBox(height: 24),
               FilledButton.icon(
                 onPressed: _isAnalyzing ? null : _analyzeFood,
                 icon: const Icon(Icons.auto_awesome),
@@ -159,6 +159,7 @@ class _MealAnalysisScreenState extends State<MealAnalysisScreen> {
                 onPressed: _analyzedMeal == null || _isAnalyzing ? null : _saveMeal,
                 child: const Text('Зберегти прийом їжі'),
               ),
+              const SizedBox(height: 24), // Додатковий відступ знизу
             ],
           ),
         ),
@@ -223,47 +224,51 @@ class _AnalysisResultCard extends StatelessWidget {
               ],
             ),
             const SizedBox(height: 12),
-            Text(
-              'Склад страви',
-              style: Theme.of(context).textTheme.titleSmall,
-            ),
-            const SizedBox(height: 8),
             if (meal.ingredients.isEmpty)
               const Text('Деталізацію інгредієнтів не знайдено')
             else
-              Column(
-                children: meal.ingredients
-                    .map(
-                      (ingredient) => Container(
-                        width: double.infinity,
-                        margin: const EdgeInsets.only(bottom: 8),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
-                          color: Colors.white10,
-                          borderRadius: BorderRadius.circular(10),
+              // ДОДАНО: Гармошка (ExpansionTile) для інгредієнтів
+              Theme(
+                data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+                child: ExpansionTile(
+                  tilePadding: EdgeInsets.zero,
+                  title: Text(
+                    'Склад страви',
+                    style: Theme.of(context).textTheme.titleSmall,
+                  ),
+                  children: meal.ingredients
+                      .map(
+                        (ingredient) => Container(
+                          width: double.infinity,
+                          margin: const EdgeInsets.only(bottom: 8),
+                          padding: const EdgeInsets.all(10),
+                          decoration: BoxDecoration(
+                            color: Colors.white10,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                ingredient.name.isEmpty
+                                    ? 'Невідомий інгредієнт'
+                                    : ingredient.name,
+                                style: Theme.of(context).textTheme.bodyLarge,
+                              ),
+                              const SizedBox(height: 4),
+                              Text(
+                                '${ingredient.calories} ккал • '
+                                'Б ${ingredient.proteinGrams} г • '
+                                'В ${ingredient.carbsGrams} г • '
+                                'Ж ${ingredient.fatsGrams} г',
+                                style: Theme.of(context).textTheme.bodySmall,
+                              ),
+                            ],
+                          ),
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              ingredient.name.isEmpty
-                                  ? 'Невідомий інгредієнт'
-                                  : ingredient.name,
-                              style: Theme.of(context).textTheme.bodyLarge,
-                            ),
-                            const SizedBox(height: 4),
-                            Text(
-                              '${ingredient.calories} ккал • '
-                              'Б ${ingredient.proteinGrams} г • '
-                              'В ${ingredient.carbsGrams} г • '
-                              'Ж ${ingredient.fatsGrams} г',
-                              style: Theme.of(context).textTheme.bodySmall,
-                            ),
-                          ],
-                        ),
-                      ),
-                    )
-                    .toList(),
+                      )
+                      .toList(),
+                ),
               ),
           ],
         ),
