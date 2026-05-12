@@ -14,18 +14,19 @@ import 'services/storage_service.dart';
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   try {
+    await dotenv.load(fileName: '.env');
+    
     await Firebase.initializeApp(
-      options: const FirebaseOptions(
-        apiKey: 'AIzaSyB_RbxAQcdbpD_DpMVg3N1ZvYVtPxt5yzU',
-        authDomain: 'food-tracker-79f10.firebaseapp.com',
-        projectId: 'food-tracker-79f10',
-        storageBucket: 'food-tracker-79f10.firebasestorage.app',
-        messagingSenderId: '563142500451',
-        appId: '1:563142500451:web:d41b5c3a8dc3eed6e0d856',
+      options: FirebaseOptions(
+        apiKey: dotenv.env['FIREBASE_API_KEY']!,
+        authDomain: dotenv.env['FIREBASE_AUTH_DOMAIN'],
+        projectId: dotenv.env['FIREBASE_PROJECT_ID']!,
+        storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET'],
+        messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID']!,
+        appId: dotenv.env['FIREBASE_APP_ID']!,
       ),
     );
     await initializeDateFormatting('uk');
-    await dotenv.load(fileName: '.env');
 
     runApp(const FoodTrackerApp());
   } catch (error, stackTrace) {
