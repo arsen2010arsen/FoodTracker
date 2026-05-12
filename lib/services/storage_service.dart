@@ -57,9 +57,15 @@ class StorageService {
         .where('logged_at', isLessThan: end.toIso8601String())
         .get();
 
-    final meals = query.docs.map((d) => Meal.fromJson(d.data())).toList()
+    final meals = query.docs
+        .map((d) => Meal.fromJson(d.data(), docId: d.id))
+        .toList()
       ..sort((a, b) => b.loggedAt.compareTo(a.loggedAt));
     return meals;
+  }
+
+  Future<void> deleteMeal(String mealId) async {
+    await _mealsCollection.doc(mealId).delete();
   }
 
   Future<void> saveUserProfile(Map<String, dynamic> profileJson) async {

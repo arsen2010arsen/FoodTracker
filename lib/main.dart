@@ -50,6 +50,31 @@ Future<void> main() async {
   }
 }
 
+// ─── Design Tokens ────────────────────────────────────────────────
+class AppColors {
+  AppColors._();
+
+  static const Color background = Color(0xFF0A0A0F);
+  static const Color surface = Color(0xFF141420);
+  static const Color surfaceVariant = Color(0xFF1C1C2E);
+  static const Color cardBorder = Color(0x0FFFFFFF); // white 6%
+
+  // Accent gradient endpoints
+  static const Color primaryStart = Color(0xFF7C4DFF);
+  static const Color primaryEnd = Color(0xFF448AFF);
+  static const Color accent = Color(0xFF00E5FF);
+
+  // Macro-specific colours
+  static const Color calories = Color(0xFFFF6D00);
+  static const Color protein = Color(0xFF00E676);
+  static const Color carbs = Color(0xFFFFD600);
+  static const Color fats = Color(0xFFFF5252);
+
+  static const LinearGradient primaryGradient = LinearGradient(
+    colors: [primaryStart, primaryEnd],
+  );
+}
+
 class FoodTrackerApp extends StatelessWidget {
   const FoodTrackerApp({super.key});
 
@@ -62,27 +87,209 @@ class FoodTrackerApp extends StatelessWidget {
       title: 'FoodTracker',
       locale: const Locale('uk'),
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        brightness: Brightness.dark,
-        scaffoldBackgroundColor: const Color(0xFF0F1115),
-        colorScheme: ColorScheme.fromSeed(
-          seedColor: const Color(0xFF64B5F6),
-          brightness: Brightness.dark,
-        ),
-        appBarTheme: const AppBarTheme(
-          backgroundColor: Colors.transparent,
-          centerTitle: false,
-        ),
-        cardTheme: CardThemeData(
-          color: const Color(0xFF171A21),
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-          elevation: 0,
-        ),
-      ),
+      theme: _buildTheme(),
       home: _AuthGate(
         storageService: storageService,
         geminiService: geminiService,
+      ),
+    );
+  }
+
+  ThemeData _buildTheme() {
+    return ThemeData(
+      useMaterial3: true,
+      brightness: Brightness.dark,
+      scaffoldBackgroundColor: AppColors.background,
+      colorScheme: ColorScheme.fromSeed(
+        seedColor: AppColors.primaryStart,
+        brightness: Brightness.dark,
+        surface: AppColors.surface,
+      ),
+
+      // ── App Bar ─────────────────────────────────────────────
+      appBarTheme: const AppBarTheme(
+        backgroundColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
+        elevation: 0,
+        centerTitle: false,
+        titleTextStyle: TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
+          letterSpacing: -0.3,
+        ),
+        iconTheme: IconThemeData(color: Colors.white70),
+      ),
+
+      // ── Cards ───────────────────────────────────────────────
+      cardTheme: CardThemeData(
+        color: AppColors.surface,
+        surfaceTintColor: Colors.transparent,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(20),
+          side: const BorderSide(color: AppColors.cardBorder, width: 1),
+        ),
+        elevation: 0,
+        margin: EdgeInsets.zero,
+      ),
+
+      // ── Filled Buttons ──────────────────────────────────────
+      filledButtonTheme: FilledButtonThemeData(
+        style: FilledButton.styleFrom(
+          minimumSize: const Size(double.infinity, 52),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          textStyle: const TextStyle(
+            fontSize: 16,
+            fontWeight: FontWeight.w600,
+            letterSpacing: 0.2,
+          ),
+        ),
+      ),
+
+      // ── Outlined Buttons ────────────────────────────────────
+      outlinedButtonTheme: OutlinedButtonThemeData(
+        style: OutlinedButton.styleFrom(
+          minimumSize: const Size(double.infinity, 52),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(16),
+          ),
+          side: BorderSide(color: Colors.white.withOpacity(0.12)),
+          foregroundColor: Colors.white70,
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ),
+
+      // ── Text Buttons ────────────────────────────────────────
+      textButtonTheme: TextButtonThemeData(
+        style: TextButton.styleFrom(
+          foregroundColor: AppColors.accent,
+          textStyle: const TextStyle(
+            fontSize: 15,
+            fontWeight: FontWeight.w600,
+          ),
+        ),
+      ),
+
+      // ── Input Fields ────────────────────────────────────────
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.surfaceVariant,
+        contentPadding:
+            const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: BorderSide.none,
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide: const BorderSide(color: AppColors.cardBorder),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(14),
+          borderSide:
+              const BorderSide(color: AppColors.primaryStart, width: 1.5),
+        ),
+        labelStyle: const TextStyle(color: Colors.white54, fontSize: 14),
+        hintStyle: const TextStyle(color: Colors.white30, fontSize: 14),
+      ),
+
+      // ── Dropdown ────────────────────────────────────────────
+      dropdownMenuTheme: const DropdownMenuThemeData(
+        textStyle: TextStyle(color: Colors.white, fontSize: 15),
+      ),
+
+      // ── Expansion Tile ──────────────────────────────────────
+      expansionTileTheme: const ExpansionTileThemeData(
+        tilePadding: EdgeInsets.zero,
+        childrenPadding: EdgeInsets.zero,
+        collapsedIconColor: Colors.white54,
+        iconColor: AppColors.accent,
+        shape: Border(),
+        collapsedShape: Border(),
+      ),
+
+      // ── Snackbar ────────────────────────────────────────────
+      snackBarTheme: SnackBarThemeData(
+        backgroundColor: AppColors.surfaceVariant,
+        contentTextStyle: const TextStyle(color: Colors.white, fontSize: 14),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        behavior: SnackBarBehavior.floating,
+      ),
+
+      // ── Checkbox ────────────────────────────────────────────
+      checkboxTheme: CheckboxThemeData(
+        fillColor: WidgetStateProperty.resolveWith((states) {
+          if (states.contains(WidgetState.selected)) {
+            return AppColors.primaryStart;
+          }
+          return Colors.white12;
+        }),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(4)),
+      ),
+
+      // ── Divider ─────────────────────────────────────────────
+      dividerTheme: const DividerThemeData(color: Colors.white10, thickness: 1),
+
+      // ── Text Theme ──────────────────────────────────────────
+      textTheme: const TextTheme(
+        headlineLarge: TextStyle(
+          fontSize: 28,
+          fontWeight: FontWeight.w800,
+          color: Colors.white,
+          letterSpacing: -0.5,
+        ),
+        headlineMedium: TextStyle(
+          fontSize: 24,
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
+          letterSpacing: -0.3,
+        ),
+        headlineSmall: TextStyle(
+          fontSize: 22,
+          fontWeight: FontWeight.w700,
+          color: Colors.white,
+          letterSpacing: -0.2,
+        ),
+        titleLarge: TextStyle(
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+        titleMedium: TextStyle(
+          fontSize: 17,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+        titleSmall: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
+        bodyLarge: TextStyle(
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+          color: Colors.white,
+        ),
+        bodyMedium: TextStyle(
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+          color: Colors.white70,
+        ),
+        bodySmall: TextStyle(
+          fontSize: 13,
+          fontWeight: FontWeight.w400,
+          color: Colors.white54,
+        ),
+        labelLarge: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w600,
+          color: Colors.white,
+        ),
       ),
     );
   }

@@ -35,6 +35,7 @@ class MealIngredient {
 }
 
 class Meal {
+  final String? docId;
   final String foodName;
   final int calories;
   final int proteinGrams;
@@ -44,6 +45,7 @@ class Meal {
   final DateTime loggedAt;
 
   const Meal({
+    this.docId,
     required this.foodName,
     required this.calories,
     required this.proteinGrams,
@@ -53,8 +55,9 @@ class Meal {
     required this.loggedAt,
   });
 
-  factory Meal.fromJson(Map<String, dynamic> json) {
+  factory Meal.fromJson(Map<String, dynamic> json, {String? docId}) {
     return Meal(
+      docId: docId,
       foodName: (json['food_name'] ?? '').toString(),
       calories: _toInt(json['calories']),
       proteinGrams: _toInt(json['protein_grams'] ?? json['protein']),
