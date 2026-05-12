@@ -4,6 +4,8 @@
 ![Firebase](https://img.shields.io/badge/firebase-%23039BE5.svg?style=for-the-badge&logo=firebase)
 ![Gemini AI](https://img.shields.io/badge/Gemini%20AI-8E75B2.svg?style=for-the-badge&logo=googlebard&logoColor=white)
 
+[![Open Web App](https://img.shields.io/badge/🚀_Відкрити_додаток-000000?style=for-the-badge&logo=googlechrome&logoColor=white)](https://arsen2010arsen.github.io/FoodTracker/)
+
 **FoodTracker AI** — це розумний щоденник харчування у вигляді прогресивного веб-застосунку (PWA). Замість ручного введення даних, додаток використовує штучний інтелект для розпізнавання їжі за фото та автоматичного підрахунку калорій, білків, жирів і вуглеводів.
 
 ## ✨ Ключові можливості
